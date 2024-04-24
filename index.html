@@ -6,34 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boolzapp</title>
 
-    <!-- font awsome -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- custom styles  -->
+    <!-- Custom styles -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/responsive.css">
 
-    <!-- VUEJS -->
+    <!-- Vue.js -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-    <!-- custom script -->
+    <!-- Custom script -->
     <script defer src="./js/data.js"></script>
 </head>
 
 <body>
+    <!-- Wrapper -->
     <div class="wrapper" id="app">
         <div class="big-container">
 
-            <!-- contacts column -->
+            <!-- Contacts column -->
             <div class="contact-col">
-                <!-- contact header -->
+                <!-- Contact header -->
                 <header class="contact-header">
                     <div class="user flex">
+                        <!-- User photo and name -->
                         <img class="user-photo" src="./img/avatar_io.jpg" alt="">
                         <h2>Sofia</h2>
                     </div>
+                    <!-- Action buttons -->
                     <ul>
                         <li><button><i class="fa-solid fa-power-off"></i></button></li>
                         <li><button><i class="fa-solid fa-message"></i></button></li>
@@ -41,12 +44,14 @@
                     </ul>
                 </header>
 
-                <!-- notifications -->
+                <!-- Notifications -->
                 <div class="notifications flex">
                     <div class="bell flex">
+                        <!-- Notification status -->
                         <div class="bell-status">
                             <i class="fa-solid fa-bell-slash"></i>
                         </div>
+                        <!-- Notifications info -->
                         <div class="notifications-status">
                             <h2>Ricevi notifiche di nuovi messaggi</h2>
                             <a href="">Attiva notifiche desktop</a>
@@ -54,25 +59,29 @@
                     </div>
                 </div>
 
-                <!-- search chat -->
+                <!-- Search chat -->
                 <div class="search-bar flex">
                     <div class="search flex">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" name="s-chat" id="s-chat" aria-label="s-chat"
-                            placeholder="Cerca o inzia una nuova chat">
+                        <!-- Input for searching or starting a new chat -->
+                        <input v-model="contact" @input="handleSearch" type="text" name="s-chat" id="s-chat"
+                            aria-label="s-chat" placeholder="Cerca o inizia una nuova chat">
                     </div>
                 </div>
 
-
-                <!-- contacts -->
+                <!-- Contacts -->
                 <div class="contacts">
-                    <div class="user flex" v-for="(curContact, index) in contacts" @click.stop="activeIndex = index">
+                    <!-- Contact list -->
+                    <div class="user flex" v-for="(curContact, index) in contacts" @click.stop="activeIndex = index"
+                        v-show="curContact.visible">
+                        <!-- User photo, name, and status -->
                         <img class="user-photo" :src="`./img/avatar` + curContact.avatar + `.jpg`"
                             :alt="`Avatar di ${curContact.name}`">
                         <div class="user-status">
                             <h2>{{ curContact.name }}</h2>
                             <p>Lorem ipsum dolor sit amet</p>
                         </div>
+                        <!-- Last message time -->
                         <div class="time">
                             <p>16:15</p>
                         </div>
@@ -80,17 +89,19 @@
                 </div>
             </div>
 
-            <!-- chat column -->
+            <!-- Chat column -->
             <div class="chat-col">
-                <!-- chat header -->
+                <!-- Chat header -->
                 <header class="chat-header">
                     <div class="user flex">
+                        <!-- User photo and name of active contact -->
                         <img class="user-photo" :src="'./img/avatar' + contacts[activeIndex].avatar + '.jpg'" alt="">
                         <div class="user-status">
                             <h2>{{ contacts[activeIndex].name }}</h2>
                             <p>Ultimo accesso oggi alle 16:26</p>
                         </div>
                     </div>
+                    <!-- Action buttons -->
                     <ul>
                         <li><button><i class="fa-solid fa-magnifying-glass"></i></button></li>
                         <li><button><i class="fa-solid fa-paperclip"></i></button></li>
@@ -98,16 +109,19 @@
                     </ul>
                 </header>
 
-                <!-- chat screen -->
+                <!-- Chat screen -->
                 <div class="chat-screen">
                     <div class="msg-container">
+                        <!-- Messages -->
                         <div class="row" v-for="currMessage in contacts[activeIndex].messages">
 
-                            <!-- sent messages -->
+                            <!-- Sent messages -->
                             <div v-if="currMessage.status === `sent`" class="your msg">
+                                <!-- Message text -->
                                 <div class="msg-text">
                                     <p>{{ currMessage.message }}</p>
                                 </div>
+                                <!-- Message time and dropdown menu -->
                                 <div class="msg-time flex">
                                     <button class="dropdown">
                                         <i class="fa-solid fa-chevron-down"></i>
@@ -121,14 +135,14 @@
                                     <p>{{ currMessage.date }}</p>
                                 </div>
                             </div>
-                            <!-- /sent messages -->
 
-                            <!-- received messages -->
-
+                            <!-- Received messages -->
                             <div v-else class="other msg">
+                                <!-- Message text -->
                                 <div class="msg-text">
                                     <p>{{ currMessage.message }}</p>
                                 </div>
+                                <!-- Message time and dropdown menu -->
                                 <div class="msg-time flex">
                                     <button class="dropdown">
                                         <i class="fa-solid fa-chevron-down"></i>
@@ -142,19 +156,20 @@
                                     <p>{{ currMessage.date }}</p>
                                 </div>
                             </div>
-
-                            <!-- /received messages -->
                         </div>
                     </div>
                 </div>
 
-                <!-- chat footer  -->
+                <!-- Chat footer -->
                 <footer class="chat-footer">
+                    <!-- Emoji button -->
                     <button><i class="fa-regular fa-face-smile"></i></button>
+                    <!-- Form for typing a message -->
                     <form @submit.prevent="sendMsg" action="">
                         <input type="text" name="chat-text" id="chat-text" aria-label="chat-text"
                             placeholder="Scrivi un messaggio" v-model="newMessage">
                     </form>
+                    <!-- Microphone button -->
                     <button><i class="fa-solid fa-microphone"></i></button>
                 </footer>
             </div>

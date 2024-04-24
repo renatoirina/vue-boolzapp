@@ -1,6 +1,7 @@
 Vue.createApp({
-    data() {
+    data () {
         return {
+            contact: "",
             newMessage: "",
             activeIndex: 0,
             contacts: [
@@ -191,5 +192,29 @@ Vue.createApp({
             // Resetto il campo del nuovo messaggio
             this.newMessage = "";
         },
+
+        handleSearch() {
+            // Controllo se ho inserito qualcosa nella barra di ricerca
+            if (this.contact !== "") {
+                // Scorro ogni contatto
+                this.contacts.forEach(curContact => {
+                    // Converto il nome del contatto e la stringa di ricerca in minuscolo per un confronto senza distinzione tra maiuscole e minuscole
+                    const name = curContact.name.toLowerCase();
+                    // Controllo se il nome del contatto include la stringa di ricerca
+                    if (name.includes(this.contact.toLowerCase())) {
+                        // Se il nome del contatto include la mia ricerca, lo rendo visibile
+                        curContact.visible = true;
+                    } else {
+                        // Se il nome del contatto non include la mia ricerca, lo rendo non visibile
+                        curContact.visible = false;
+                    }
+                });
+            } else {
+                // Se la mia ricerca è vuota, mostro tutti i contatti
+                this.contacts.forEach(curContact => {
+                    curContact.visible = true;
+                });
+            }
+        }        
     },
-}).mount("#app");
+}).mount("#app")
