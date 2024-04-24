@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boolzapp</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <!-- Stili personalizzati -->
+    <!-- font awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- custom styles  -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/responsive.css">
 
-    <!-- Vue.js -->
+    <!-- VUEJS -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-    <!-- Script personalizzato -->
+    <!-- custom script -->
     <script defer src="./js/data.js"></script>
 </head>
+
 <body>
-    <!-- Wrapper principale -->
     <div class="wrapper" id="app">
         <div class="big-container">
-            
-            <!-- Colonna dei contatti -->
+
+            <!-- contacts column -->
             <div class="contact-col">
-                <!-- Intestazione dei contatti -->
+                <!-- contact header -->
                 <header class="contact-header">
                     <div class="user flex">
                         <img class="user-photo" src="./img/avatar_io.jpg" alt="">
@@ -38,7 +41,7 @@
                     </ul>
                 </header>
 
-                <!-- Notifiche -->
+                <!-- notifications -->
                 <div class="notifications flex">
                     <div class="bell flex">
                         <div class="bell-status">
@@ -51,18 +54,21 @@
                     </div>
                 </div>
 
-                <!-- Barra di ricerca nella chat -->
+                <!-- search chat -->
                 <div class="search-bar flex">
                     <div class="search flex">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" name="s-chat" id="s-chat" aria-label="s-chat" placeholder="Cerca o inzia una nuova chat">
-                    </div>    
+                        <input type="text" name="s-chat" id="s-chat" aria-label="s-chat"
+                            placeholder="Cerca o inzia una nuova chat">
+                    </div>
                 </div>
 
-                <!-- Lista dei contatti -->
+
+                <!-- contacts -->
                 <div class="contacts">
                     <div class="user flex" v-for="(curContact, index) in contacts" @click.stop="activeIndex = index">
-                        <img class="user-photo" :src="`./img/avatar` + curContact.avatar + `.jpg`" alt="">
+                        <img class="user-photo" :src="`./img/avatar` + curContact.avatar + `.jpg`"
+                            :alt="`Avatar di ${curContact.name}`">
                         <div class="user-status">
                             <h2>{{ curContact.name }}</h2>
                             <p>Lorem ipsum dolor sit amet</p>
@@ -72,15 +78,14 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Colonna della chat -->
+            <!-- chat column -->
             <div class="chat-col">
-                <!-- Intestazione della chat -->
+                <!-- chat header -->
                 <header class="chat-header">
                     <div class="user flex">
-                        <img class="user-photo" :src="'img/avatar' + contacts[activeIndex].avatar + '.jpg'" alt="">
+                        <img class="user-photo" :src="'./img/avatar' + contacts[activeIndex].avatar + '.jpg'" alt="">
                         <div class="user-status">
                             <h2>{{ contacts[activeIndex].name }}</h2>
                             <p>Ultimo accesso oggi alle 16:26</p>
@@ -93,12 +98,12 @@
                     </ul>
                 </header>
 
-                <!-- Schermo della chat -->
+                <!-- chat screen -->
                 <div class="chat-screen">
                     <div class="msg-container">
                         <div class="row" v-for="currMessage in contacts[activeIndex].messages">
-                            
-                            <!-- Messaggi inviati -->
+
+                            <!-- sent messages -->
                             <div v-if="currMessage.status === `sent`" class="your msg">
                                 <div class="msg-text">
                                     <p>{{ currMessage.message }}</p>
@@ -116,8 +121,10 @@
                                     <p>{{ currMessage.date }}</p>
                                 </div>
                             </div>
-                            
-                            <!-- Messaggi ricevuti -->
+                            <!-- /sent messages -->
+
+                            <!-- received messages -->
+
                             <div v-else class="other msg">
                                 <div class="msg-text">
                                     <p>{{ currMessage.message }}</p>
@@ -135,19 +142,24 @@
                                     <p>{{ currMessage.date }}</p>
                                 </div>
                             </div>
-    
+
+                            <!-- /received messages -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer della chat -->
+                <!-- chat footer  -->
                 <footer class="chat-footer">
                     <button><i class="fa-regular fa-face-smile"></i></button>
-                    <input type="text" name="chat-text" id="chat-text" aria-label="chat-text" placeholder="Scrivi un messaggio">
+                    <form @submit.prevent="sendMsg" action="">
+                        <input type="text" name="chat-text" id="chat-text" aria-label="chat-text"
+                            placeholder="Scrivi un messaggio" v-model="newMessage">
+                    </form>
                     <button><i class="fa-solid fa-microphone"></i></button>
                 </footer>
             </div>
         </div>
     </div>
 </body>
+
 </html>

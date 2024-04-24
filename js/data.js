@@ -1,7 +1,7 @@
 Vue.createApp({
-    data () {
+    data() {
         return {
-
+            newMessage: "",
             activeIndex: 0,
             contacts: [
                 {
@@ -170,6 +170,26 @@ Vue.createApp({
         }
     },
     methods: {
+        // Metodo per inviare un nuovo messaggio
+        sendMsg() {
+            // Aggiungo il nuovo messaggio alla lista dei messaggi del contatto attivo
+            this.contacts[this.activeIndex].messages.push({
+                date: "10/01/2020 16:35:00",
+                message: this.newMessage,
+                status: "sent",
+            });
 
-    }
-}).mount("#app")
+            // Simulo una risposta ricevuta dopo un secondi
+            setTimeout(() => {
+                this.contacts[this.activeIndex].messages.push({
+                    date: "10/01/2020 15:51:00",
+                    message: "ok",
+                    status: "received",
+                });
+            }, 1000);
+
+            // Resetto il campo del nuovo messaggio
+            this.newMessage = "";
+        },
+    },
+}).mount("#app");
